@@ -1,6 +1,7 @@
 package com.dbx.core.db.datasource;
 
 import com.dbx.core.constans.DbType;
+import com.dbx.core.constans.SortType;
 import com.dbx.core.db.datasource.model.FieldDbModel;
 import com.dbx.core.db.datasource.model.FieldModel;
 import com.dbx.core.db.datasource.model.IndexModel;
@@ -9,7 +10,6 @@ import com.dbx.core.db.sql.generator.SqlGenerator;
 import com.dbx.core.db.sql.resolver.FieldTypeResolver;
 import com.dbx.core.exception.JobDefinitionException;
 import com.dbx.core.exception.JobExecuteException;
-import com.dbx.core.util.jdbc.ResultSetPrinter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -22,10 +22,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -97,8 +94,6 @@ public class BasicDataSourceWrapper implements DataSourceWrapper {
             tableModel.setSchema(connection.getSchema());
             tableModel.setTableType("TABLE");
 
-            // 设置表的索引信息
-            tableModel.setIndexModels(getAllIndex(tableName, connection));
 
             // 设置 FieldDbModel 数据。
             List<FieldDbModel> fieldDbModel = getFieldDbModel(tableName, sqlGenerator, connection);
@@ -108,6 +103,10 @@ public class BasicDataSourceWrapper implements DataSourceWrapper {
                 FieldModel fieldModel = FieldModel.builder().fieldDbModel(dbModel).fieldJavaModel(fieldTypeResolver.dbModel2JavaModel(dbModel)).build();
                 fieldModels.put(dbModel.getFieldName(), fieldModel);
             }
+            String pk = fieldDbModel.get(0).getFieldName();
+            // 设置表的索引信息
+            tableModel.setIndexModels(getAllIndex(tableName, connection, pk));
+
             tableModel.setFieldModels(fieldModels);
             return tableModel;
         } catch (SQLException e) {
@@ -167,7 +166,12 @@ public class BasicDataSourceWrapper implements DataSourceWrapper {
                 dbModel.setNullable(Integer.parseInt(field.get("NULLABLE").toString()) == DatabaseMetaData.columnNullable);
                 dbModel.setDefaultValue(field.get("COLUMN_DEF").toString());
                 dbModel.setContent(field.get("REMARKS").toString());
-                list.add(dbModel);
+                // 主键放置在第一个位置
+                if (dbModel.getPk()) {
+                    list.add(0, dbModel);
+                } else {
+                    list.add(dbModel);
+                }
             }
         } else {
             try (ResultSet rs = connection.getMetaData().getColumns(connection.getCatalog(), connection.getSchema(), tableName, null)) {
@@ -183,7 +187,11 @@ public class BasicDataSourceWrapper implements DataSourceWrapper {
                     dbModel.setNullable(rs.getInt("NULLABLE") == DatabaseMetaData.columnNullable);
                     dbModel.setDefaultValue(rs.getString("COLUMN_DEF"));
                     dbModel.setContent(rs.getString("REMARKS"));
-                    list.add(dbModel);
+                    if (dbModel.getPk()) {
+                        list.add(0, dbModel);
+                    } else {
+                        list.add(dbModel);
+                    }
                 }
             }
         }
@@ -208,21 +216,52 @@ public class BasicDataSourceWrapper implements DataSourceWrapper {
     /**
      * 获取表的索引信息
      *
-     * @return
+     * @return  Map<String, IndexModel>
      */
-    private Map<String, IndexModel> getAllIndex(String tableName, Connection connection) {
-        Map<String, IndexModel> map = new HashMap<>();
+    private Map<String, IndexModel> getAllIndex(String tableName, Connection connection, String primaryKeyName) {
+        Map<String, IndexModel> indexMap = new HashMap<>();
+
         try (ResultSet rs = connection.getMetaData().getIndexInfo(connection.getCatalog(), connection.getSchema(), tableName, false, false)) {
-            ResultSetPrinter.printResultSet(rs);
-            /*if (rs.next()) {
-                //主键列名
-                return rs.getString("COLUMN_NAME");
-            }*/
+            while (rs.next()) {
+                String indexName = rs.getString("INDEX_NAME");
+                String columnName = rs.getString("COLUMN_NAME");
+                boolean nonUnique = rs.getBoolean("NON_UNIQUE");
+                String sort = rs.getString("ASC_OR_DESC");
+
+                IndexModel indexModel = indexMap.get(indexName);
+                if (indexModel == null) {
+                    indexModel = new IndexModel();
+                    indexModel.setIndexName(indexName);
+                    indexModel.setUnique(!nonUnique);
+                    indexMap.put(indexName, indexModel);
+                }
+
+                String[] fieldNames = indexModel.getFieldNames();
+                SortType[] sortTypes = indexModel.getSortType();
+
+                // 将columnName添加到fieldNames数组
+                String[] newFieldNames = Arrays.copyOf(fieldNames, fieldNames.length + 1);
+                newFieldNames[fieldNames.length] = columnName;
+                indexModel.setFieldNames(newFieldNames);
+
+                // 设置默认的排序类型，保持与fieldNames长度一致
+                SortType[] newSortTypes = Arrays.copyOf(sortTypes, sortTypes.length + 1);
+                newSortTypes[sortTypes.length] = sort.equals("A") ? SortType.ASC : SortType.DESC;
+                indexModel.setSortType(newSortTypes);
+            }
         } catch (SQLException e) {
             throw new JobExecuteException(e.getMessage(), e);
         }
-        return map;
+        if (!indexMap.isEmpty()) {
+            Map<String, IndexModel> resultMap = new HashMap<>();
+            // 处理掉 primary key 和 将 Map<String, IndexModel> 的key 变成 column1,column2
+            indexMap.forEach((k, v) -> resultMap.put(String.join(",", v.getFieldNames()), v));
+            resultMap.remove(primaryKeyName);
+            return resultMap;
+        }
+        return indexMap;
     }
+
 
     private void closeResultSet(ResultSet rs) {
         if (rs != null) {
