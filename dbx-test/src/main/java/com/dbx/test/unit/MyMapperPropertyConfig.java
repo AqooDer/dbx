@@ -86,15 +86,15 @@ public class MyMapperPropertyConfig implements JobConfig {
 
     public static JobConfig getMapperPropertyConfig() {
         MyMapperPropertyConfig config = new MyMapperPropertyConfig();
-        config.setDbTransferType(DbTransferType.instance(DbType.mysql, DbType.mysql));
+        config.setDbTransferType(DbTransferType.instance(DbType.MYSQL, DbType.MYSQL));
 
         config.setSourceConfig(MapperDataSourceConfig.builder().name("gs_report")
-                .url("jdbc:mysql://127.0.0.1:3306/unit_s?useOldAliasMetadataBehavior=true&zeroDateTimeBehavior=round&useSSL=false&allowPublicKeyRetrieval=true")
-                .username("root").password("1qaz2wsx").driver("com.mysql.cj.jdbc.Driver").build());
+                .url("jdbc:MYSQL://127.0.0.1:3306/unit_s?useOldAliasMetadataBehavior=true&zeroDateTimeBehavior=round&useSSL=false&allowPublicKeyRetrieval=true")
+                .username("root").password("1qaz2wsx").driver("com.MYSQL.cj.jdbc.Driver").build());
 
         config.setTargetConfig(MapperDataSourceConfig.builder().name("jc_report_test")
-                .url("jdbc:mysql://127.0.0.1:3306/unit_t?useOldAliasMetadataBehavior=true&useSSL=false&allowPublicKeyRetrieval=true")
-                .driver("com.mysql.cj.jdbc.Driver").username("root").password("1qaz2wsx").build());
+                .url("jdbc:MYSQL://127.0.0.1:3306/unit_t?useOldAliasMetadataBehavior=true&useSSL=false&allowPublicKeyRetrieval=true")
+                .driver("com.MYSQL.cj.jdbc.Driver").username("root").password("1qaz2wsx").build());
         return config;
     }
 }

@@ -22,7 +22,7 @@ public abstract class DataTransformer implements Transformer {
 
     private final JobDefinition jobDefinition;
 
-    public DataTransformer(JobDefinition jobDefinition) {
+    protected DataTransformer(JobDefinition jobDefinition) {
         this.jobDefinition = jobDefinition;
     }
 
@@ -41,7 +41,7 @@ public abstract class DataTransformer implements Transformer {
                 try {
                     do {
                         DataSqlObject dataSqlObject = dataSqlExecutor.generatorInsertSql(tvm, counter);
-                        if (dataSqlObject.getBatchArgs().size() != 0) {
+                        if (!dataSqlObject.getBatchArgs().isEmpty()) {
                             if (jobDefinition.getJobConfig().enableInsertData()) {
                                 dataSqlExecutor.batchSaveData(dataSqlObject);
                             }
@@ -82,13 +82,13 @@ public abstract class DataTransformer implements Transformer {
         Sets.SetView<String> difference = Sets.difference(tableInsert, deletedTables);
 
         JobTool jobTool = jobDefinition.getJobTool();
-        if (jobDefinition.getJobConfig().enableClearTableDataBeforeInsert() && difference.size() > 0) {
+        if (jobDefinition.getJobConfig().enableClearTableDataBeforeInsert() && !difference.isEmpty()) {
             List<String> sqlList = new ArrayList<>();
             for (String goalTable : difference) {
                 sqlList.add(jobTool.getTargetSqlGenerator().getClearTableSql(goalTable));
             }
             if (jobDefinition.getJobTool().getDataSourceMapping().getTargetWrapper() == null) {
-                log.warn(" the target datasource is not defined . please check. ");
+                log.warn(" the TARGET datasource is not defined . please check. ");
             } else {
                 jobTool.getDataSqlExecutor().batchClearTables(sqlList.toArray(new String[0]));
                 log.info(" clear table {} data before insert success.", difference.toString());

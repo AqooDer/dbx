@@ -1,6 +1,5 @@
 package com.dbx.core.config;
 
-import com.dbx.core.db.DataSourceMapping;
 import com.dbx.core.db.datasource.model.TableModel;
 import lombok.NonNull;
 
@@ -28,22 +27,6 @@ public interface TableMapperDefinition {
      */
     @NonNull
     String getId();
-
-    /**
-     * 获取数据源配置
-     *
-     * @return 数据源上下文
-     */
-    @NonNull
-    DataSourceMapping getDataSourceMapping();
-
-    /**
-     * 获取配置信息
-     *
-     * @return 配置信息
-     */
-
-    //@NonNull MapperProperties getMapperProperties();
 
     /**
      * 获取表模型信息

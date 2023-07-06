@@ -84,7 +84,7 @@ public class OracleFieldTypeResolver implements FieldTypeResolver {
                 .match(matchDbType("number"), javaType(FieldJavaType.Long))
                 .match(matchDbType("char","nchar"), javaType(FieldJavaType.FixedString))
                 .match(matchDbType( "varchar2", "nvarchar2", "clob", "nclob"), javaType(FieldJavaType.String))
-                .match(matchDbType(OracleFieldTypeEnum.raw.name()), v -> {
+                .match(matchDbType(OracleFieldTypeEnum.RAW.name()), v -> {
                     fieldDbModel.setLength(fieldDbModel.getLength() * 2); // raw的长度是16，则16进制的长度为32。
                     return FieldJavaType.String;
                 })

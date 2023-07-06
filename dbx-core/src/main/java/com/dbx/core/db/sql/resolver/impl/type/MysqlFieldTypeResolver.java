@@ -63,7 +63,7 @@ public class MysqlFieldTypeResolver implements FieldTypeResolver {
 
     /**
      * 将db模型根据数据库类型转换成对应的java模型
-     * mysql : int=integer
+     * MYSQL : int=integer
      * 浮点数统一使用 Decimal(m,d) = numeric(m,d)  M<65
      * text < 65535  longtext < 2147483647  mediumtext< 16777215
      *

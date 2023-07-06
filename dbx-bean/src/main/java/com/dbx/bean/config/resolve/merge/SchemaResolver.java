@@ -1,6 +1,6 @@
 package com.dbx.bean.config.resolve.merge;
 
-import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.collection.CollUtil;
 import com.dbx.bean.config.annotation.DdlConfig;
 import com.dbx.bean.config.annotation.MapperField;
 import com.dbx.bean.config.annotation.MapperTable;
@@ -58,8 +58,8 @@ public class SchemaResolver {
         Map<String, FieldModel> fieldModelMap = new HashMap<>(60);
 
         // 解析 mapperFields
-        // ddl设置关系： ddl > ref > source db数据库转换
-        // 值的设置：value设置关系 ： customFormatValue > defaultFormatValue > defaultValue > ref >  source
+        // ddl设置关系： ddl > ref > SOURCE db数据库转换
+        // 值的设置：value设置关系 ： customFormatValue > defaultFormatValue > defaultValue > ref >  SOURCE
 
         mapperFieldMap.forEach((k, v) -> {
             k = k.toLowerCase(Locale.ROOT);
@@ -67,7 +67,7 @@ public class SchemaResolver {
             if (!fieldModelMap.containsKey(k)) {
                 FieldJavaModel fieldJavaModel = null;
                 FieldModel sourceFieldModel = null;
-                FieldType sourceFrom = FieldType.source;
+                FieldType sourceFrom = FieldType.SOURCE;
                 FieldModel targetFieldModel = null;
                 if (v.ddl().type() != FieldJavaType.NONE) {
                     if (v.id()) {
@@ -85,21 +85,21 @@ public class SchemaResolver {
                     // 该地方应该是没得类型转换的问题
                     Map<String, FieldModel> parentTargetMap = parentTmd.getTableModel().getFieldModels();
                     sourceFieldModel = parentTargetMap.get(v.superTarget().toLowerCase());
-                    sourceFrom = FieldType.superTarget;
+                    sourceFrom = FieldType.SUPER_TARGET;
                     targetFieldModel = getFieldModelFromSuper(k, sourceFieldModel);
                 }
 
                 // 当前表的原表定义处理
                 if (StringUtils.hasText(v.superSource())) {
                     if (parentTmd == null) {
-                        throw new JobDefinitionException(String.format("the ddl definition of field '%s' in table '%s' is error, the superSource is '%s'.the class is '%s'",
+                        throw new JobDefinitionException(String.format("the ddl definition of field '%s' in table '%s' is error, the SUPER_SOURCE is '%s'.the class is '%s'",
                                 v.target(),
                                 meson.getMapperTable().target(), v.superSource(), meson.getConfig().getName()));
                     }
                     if (parentTmd.getSourceTableModel() != null) {
                         // 这样写是为了给 ddl定义和id定时时赋值。
                         sourceFieldModel = parentTmd.getSourceTableModel().getFieldModels().get(v.superSource().toLowerCase());
-                        sourceFrom = FieldType.superSource;
+                        sourceFrom = FieldType.SUPER_SOURCE;
                         if (targetFieldModel == null && sourceFieldModel != null) {
                             targetFieldModel = getFieldModelFromSuper(k, sourceFieldModel);
                         }
@@ -113,7 +113,7 @@ public class SchemaResolver {
                                 v.source(), v.target(),
                                 meson.getMapperTable().target(), meson.getConfig().getName()));
                     }
-                    sourceFrom = FieldType.source;
+                    sourceFrom = FieldType.SOURCE;
                     if (targetFieldModel == null) {
                         targetFieldModel = getFieldModelFromOwn(k, sourceFieldModel);
                     }
@@ -172,7 +172,7 @@ public class SchemaResolver {
         // 转换后，替换列名
         toFieldJavaModel.setFieldName(fileName);
         fieldDbModel.setFieldName(fileName);
-        return FieldModel.builder().fieldJavaModel(toFieldJavaModel).fieldDbModel(fieldDbModel).source(sourceFieldModel).sourceFrom(FieldType.source).build();
+        return FieldModel.builder().fieldJavaModel(toFieldJavaModel).fieldDbModel(fieldDbModel).source(sourceFieldModel).sourceFrom(FieldType.SOURCE).build();
     }
 
     private FieldModel getFieldModel(String fileName, FieldJavaModel fieldJavaModel, FieldModel sourceFieldModel) {
@@ -204,10 +204,10 @@ public class SchemaResolver {
      */
     private void doConfirmId(Map<String, FieldModel> fieldModelMap, Map<String, MapperField> mapperFieldMap, String className) {
         Set<FieldDbModel> fieldDbModels = fieldModelMap.values().stream().map(FieldModel::getFieldDbModel).filter(FieldDbModel::getPk).collect(Collectors.toSet());
-        if (fieldDbModels.size() == 0) {
+        if (fieldDbModels.isEmpty()) {
             throw new JobDefinitionException(String.format("the '%s' mapper definition not found the id definition , please check.", className));
         }
-        if (CollectionUtil.isNotEmpty(mapperFieldMap)) {
+        if (CollUtil.isNotEmpty(mapperFieldMap)) {
             FieldDbModel idSelected = new Selector<Set<FieldDbModel>, FieldDbModel>(fieldDbModels)
                     .match(new IdMatcher(mapperFieldMap, MapperField::id))
                     .match(new IdMatcher(mapperFieldMap, mf -> mf.ddl().type() != FieldJavaType.NONE))

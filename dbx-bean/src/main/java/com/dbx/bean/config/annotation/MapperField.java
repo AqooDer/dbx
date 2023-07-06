@@ -6,8 +6,8 @@ import java.lang.annotation.*;
 
 /**
  * @author Aqoo
- * ddl设置关系： ddl > superSource/superTarget > source
- * value设置关系 ： customFormatValue > defaultFormatValue > defaultValue > ref >  source
+ * ddl设置关系： ddl > SUPER_SOURCE/SUPER_TARGET > SOURCE
+ * value设置关系 ： customFormatValue > defaultFormatValue > defaultValue > ref >  SOURCE
  * 主键id的设置关系：id > ddl > 其他引用
  */
 @Target({ElementType.TYPE})

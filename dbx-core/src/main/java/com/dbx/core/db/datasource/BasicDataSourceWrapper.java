@@ -77,17 +77,18 @@ public class BasicDataSourceWrapper implements DataSourceWrapper {
             tableModel.setTableName(tableName);
             String sql = sqlGenerator.getTableModelQuerySql(tableName);
             Connection connection = this.getDataSource().getConnection();
+            String remarks = "REMARKS";
             if (sql != null && !sql.isEmpty()) {
                 Map<String, Object> tableInfo = this.execute(jt -> jt.queryForMap(sql));
                 if (tableInfo == null) {
                     throw new JobExecuteException(String.format("con not query the table '%s' info , please check sql '%s'.", tableName, sql));
                 }
-                tableModel.setContent(tableInfo.get("REMARKS").toString());
+                tableModel.setContent(tableInfo.get(remarks).toString());
             } else {
                 rs = connection.getMetaData().getTables(connection.getCatalog(), connection.getSchema(), tableName, null);
 
                 while (rs.next()) {
-                    tableModel.setContent(rs.getString("REMARKS"));
+                    tableModel.setContent(rs.getString(remarks));
                 }
             }
             tableModel.setCatalog(connection.getCatalog());
@@ -216,7 +217,7 @@ public class BasicDataSourceWrapper implements DataSourceWrapper {
     /**
      * 获取表的索引信息
      *
-     * @return  Map<String, IndexModel>
+     * @return Map<String, IndexModel>
      */
     private Map<String, IndexModel> getAllIndex(String tableName, Connection connection, String primaryKeyName) {
         Map<String, IndexModel> indexMap = new HashMap<>();

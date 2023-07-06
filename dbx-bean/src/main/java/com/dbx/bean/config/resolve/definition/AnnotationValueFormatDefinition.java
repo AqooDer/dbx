@@ -9,7 +9,7 @@ import lombok.ToString;
 
 /**
  * @author Aqoo
- * 值的设置：value设置关系 ： customFormatValue > defaultFormatValue > defaultValue > ref >  source
+ * 值的设置：value设置关系 ： customFormatValue > defaultFormatValue > defaultValue > ref >  SOURCE
  */
 @Setter
 @Getter
@@ -19,9 +19,9 @@ public class AnnotationValueFormatDefinition implements FieldValueFormatDefiniti
      * customFormatValue:1
      * defaultFormatValue :2
      * defaultValue:3
-     * superTarget : 4
-     * superSource : 5
-     * source : 6
+     * SUPER_TARGET : 4
+     * SUPER_SOURCE : 5
+     * SOURCE : 6
      */
     private int type;
 
@@ -29,13 +29,6 @@ public class AnnotationValueFormatDefinition implements FieldValueFormatDefiniti
 
     private AnnotationValueFormatDefinition next;
 
-
-    /*public static AnnotationValueFormatDefinition newCustomFormatValue(Class<? extends ValueFormat> valueFormat) {
-        AnnotationValueFormatDefinition annotationValueFormatDefinition = new AnnotationValueFormatDefinition();
-        annotationValueFormatDefinition.setType(1);
-        annotationValueFormatDefinition.setFormat(valueFormat);
-        return annotationValueFormatDefinition;
-    }*/
 
     public static AnnotationValueFormatDefinition newValueDefaultType(ValueDefaultType valueDefaultType) {
         AnnotationValueFormatDefinition annotationValueFormatDefinition = new AnnotationValueFormatDefinition();

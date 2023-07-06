@@ -62,7 +62,6 @@ public abstract class AbstractJob implements Job {
                     return;
                 }
                 transformer.transfer();
-                //transformer.getWriter().write(transformer.getChannel().transferTo(transformer.getReader().read()));
             }
             this.jobState = JobState.STOP;
         } catch (Exception e) {

@@ -45,7 +45,7 @@ public class ClassUtil {
             return classList;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 

@@ -15,7 +15,7 @@ public abstract class SchemaTransformer implements Transformer {
 
     private JobDefinition jobDefinition;
 
-    public SchemaTransformer(JobDefinition jobDefinition) {
+    protected SchemaTransformer(JobDefinition jobDefinition) {
         this.jobDefinition = jobDefinition;
     }
 

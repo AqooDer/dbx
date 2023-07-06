@@ -9,10 +9,10 @@ public enum FieldType {
     /**
      *
      */
-    source,
-    target,
-    superTarget,
-    superSource;
+    SOURCE,
+    TARGET,
+    SUPER_TARGET,
+    SUPER_SOURCE;
 
     FieldType() {
     }

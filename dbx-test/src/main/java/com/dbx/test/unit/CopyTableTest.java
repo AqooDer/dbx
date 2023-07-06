@@ -52,7 +52,7 @@ public class CopyTableTest implements MapperConfig {
 
         @Override
         public void end(ValueContext valueContext) {
-
+            //  document why this method is empty
         }
     }
 }

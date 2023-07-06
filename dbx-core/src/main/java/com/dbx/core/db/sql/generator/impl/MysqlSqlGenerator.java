@@ -22,7 +22,7 @@ public class MysqlSqlGenerator extends AbstractSqlGenerator {
     @Override
     protected CreateTableSqLInfo doGenerateCreateTableSql(TableModel tableModel) {
         Set<Map.Entry<String, FieldModel>> entries = tableModel.getFieldModels().entrySet();
-        String createSql = (" CREATE TABLE `%s` ( " + cr + " %s " + cr + ")  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 %s ");
+        String createSql = (" CREATE TABLE `%s` ( " + CR + " %s " + CR + ")  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 %s ");
         StringBuilder sb = new StringBuilder();
         String primaryKey = "";
         int i = 1;
@@ -32,7 +32,7 @@ public class MysqlSqlGenerator extends AbstractSqlGenerator {
             sb.append(dbModel.getType());
             boolean nullable = dbModel.getNullable();
             String defaultValue = dbModel.getDefaultValue();
-            if (dbModel.getPk()) {
+            if (Boolean.TRUE.equals(dbModel.getPk())) {
                 sb.append(" NOT NULL ");
                 primaryKey = dbModel.getFieldName();
             } else {
@@ -65,15 +65,15 @@ public class MysqlSqlGenerator extends AbstractSqlGenerator {
                 sb.append("  ");
             }
             i++;
-            sb.append(cr);
+            sb.append(CR);
         }
         if (!primaryKey.isEmpty()) {
-            sb.append(", PRIMARY KEY (").append(primaryKey).append(")").append(cr);
+            sb.append(", PRIMARY KEY (").append(primaryKey).append(")").append(CR);
         }
         String content = StringUtils.hasText(tableModel.getContent()) ? "comment= '" + tableModel.getContent() + "'" : "";
         String sql = String.format(createSql, tableModel.getTableName(), sb, content);
         String dropTableSql = getDropTableSql(tableModel);
-        return CreateTableSqLInfo.builder().dropSql(dropTableSql).createSql(sql).cr(cr).build();
+        return CreateTableSqLInfo.builder().dropSql(dropTableSql).createSql(sql).cr(CR).build();
     }
 
     @Override

@@ -14,30 +14,30 @@ public class JdbcConstants {
 
     public static final String DB2_DRIVER = "COM.ibm.db2.jdbc.app.DB2Driver";
 
-    public static final String POSTGRESQL = "postgresql";
-    public static final String POSTGRESQL_DRIVER = "org.postgresql.Driver";
+    public static final String POSTGRESQL = "POSTGRESQL";
+    public static final String POSTGRESQL_DRIVER = "org.POSTGRESQL.Driver";
 
     public static final String SYBASE = "sybase";
 
-    public static final String SQL_SERVER = "sqlserver";
-    public static final String SQL_SERVER_DRIVER = "com.microsoft.jdbc.sqlserver.SQLServerDriver";
-    public static final String SQL_SERVER_DRIVER_SQLJDBC4 = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    public static final String SQL_SERVER = "SQLSERVER";
+    public static final String SQL_SERVER_DRIVER = "com.microsoft.jdbc.SQLSERVER.SQLServerDriver";
+    public static final String SQL_SERVER_DRIVER_SQLJDBC4 = "com.microsoft.SQLSERVER.jdbc.SQLServerDriver";
     public static final String SQL_SERVER_DRIVER_JTDS = "net.sourceforge.jtds.jdbc.Driver";
 
     public static final String ORACLE = "oracle";
-    public static final String ORACLE_DRIVER = "oracle.jdbc.OracleDriver";
-    public static final String ORACLE_DRIVER2 = "oracle.jdbc.driver.OracleDriver";
+    public static final String ORACLE_DRIVER = "ORACLE.jdbc.OracleDriver";
+    public static final String ORACLE_DRIVER2 = "ORACLE.jdbc.driver.OracleDriver";
 
     public static final String ALI_ORACLE = "AliOracle";
     public static final String ALI_ORACLE_DRIVER = "com.alibaba.jdbc.AlibabaDriver";
 
-    public static final String MYSQL = "mysql";
-    public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
-    public static final String MYSQL_DRIVER_6 = "com.mysql.cj.jdbc.Driver";
-    public static final String MYSQL_DRIVER_REPLICATE = "com.mysql.jdbc.";
+    public static final String MYSQL = "MYSQL";
+    public static final String MYSQL_DRIVER = "com.MYSQL.jdbc.Driver";
+    public static final String MYSQL_DRIVER_6 = "com.MYSQL.cj.jdbc.Driver";
+    public static final String MYSQL_DRIVER_REPLICATE = "com.MYSQL.jdbc.";
 
-    public static final String MARIADB = "mariadb";
-    public static final String MARIADB_DRIVER = "org.mariadb.jdbc.Driver";
+    public static final String MARIADB = "MARIADB";
+    public static final String MARIADB_DRIVER = "org.MARIADB.jdbc.Driver";
 
     public static final String DERBY = "derby";
 
@@ -56,7 +56,7 @@ public class JdbcConstants {
     public static final String KINGBASE_DRIVER = "com.kingbase.Driver";
 
     public static final String OCEANBASE = "oceanbase";
-    public static final String OCEANBASE_DRIVER = "com.mysql.jdbc.Driver";
+    public static final String OCEANBASE_DRIVER = "com.MYSQL.jdbc.Driver";
 
     public static final String INFORMIX = "informix";
 

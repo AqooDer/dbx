@@ -69,7 +69,7 @@ public class AnnotationJobFactory implements JobFactory {
             // 添加 mapperDefinition 和 targetDB 之间的schema对比 ， 一般用于mapperDefinition验证
             if (jobConfig.enableTargetSchemaVerify()) {
                 if (targetWrapper == null) {
-                    log.warn("The target database is not configured for connection, please check the configuration");
+                    log.warn("The TARGET database is not configured for connection, please check the configuration");
                 } else {
                     annotationJob.getTransformers().add(new ComparisonSchemaTransformer(jobDefinition));
                 }
@@ -79,7 +79,7 @@ public class AnnotationJobFactory implements JobFactory {
             if (jobConfig.enableCreateTable() || jobConfig.enableCreateSchemaScript()) {
                 if (jobConfig.enableCreateTable() && jobDefinition.getJobTool().getDataSourceMapping().getTargetWrapper() == null) {
                     if (targetWrapper == null) {
-                        throw new JobException("The target database is not configured for connection, please check the configuration");
+                        throw new JobException("The TARGET database is not configured for connection, please check the configuration");
                     }
                 }
                 annotationJob.getTransformers().add(new SchemaTransformer(jobDefinition) {
@@ -91,7 +91,7 @@ public class AnnotationJobFactory implements JobFactory {
             if (jobConfig.enableInsertData() || jobConfig.enableCreateDataScript()) {
                 if (jobConfig.enableInsertData() && jobDefinition.getJobTool().getDataSourceMapping().getTargetWrapper() == null) {
                     if (targetWrapper == null) {
-                        throw new JobException("The target database is not configured for connection, please check the configuration");
+                        throw new JobException("The TARGET database is not configured for connection, please check the configuration");
                     }
                 }
                 annotationJob.getTransformers().add(new DataTransformer(jobDefinition) {
@@ -127,7 +127,7 @@ public class AnnotationJobFactory implements JobFactory {
 
 
     private void init(String[] args, List<Class<? extends MapperConfig>> mapperConfigs) throws Exception {
-        if (mapperConfigs == null || mapperConfigs.size() == 0) {
+        if (mapperConfigs == null || mapperConfigs.isEmpty()) {
             throw new JobDefinitionException("mapperConfigs cannot be empty,please check");
         }
         List<MapperConfig> list = new ArrayList<>();

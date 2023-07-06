@@ -85,7 +85,6 @@ public class AnnotationDataSqlExecutor implements DataSqlExecutor {
                 dataSourceMapping(jobTool.getDataSourceMapping()).valueState(new RowValueState()).
                 parent(parentValueContext).otherValues(new HashMap<>(8)).build();
 
-        //List<String> sqlList = new ArrayList<>();
         boolean flag = tvm.getValueFormat() != null;
         if (flag) {
             tvm.getValueFormat().prepare(thisValueContext);
@@ -163,7 +162,6 @@ public class AnnotationDataSqlExecutor implements DataSqlExecutor {
         if (flag) {
             tvm.getValueFormat().end(thisValueContext);
         }
-        return;
     }
 
 
@@ -203,9 +201,6 @@ public class AnnotationDataSqlExecutor implements DataSqlExecutor {
                 value = parent.getSourceValue().get(avf.getValueFormat().toString());
             }
             if (type == 6) {
-//                if (valueContext.getSourceValue() == null) {
-//                    throw new SqlExecuteExcetion(String.format("format value error , the source data is null of '%s  %s' definition . ", id, fvm.getTargetField()));
-//                }
                 // 处理child类时 valueContext.getSourceValue() 为空
                 if (valueContext.getSourceValue() == null) {
                     return null;

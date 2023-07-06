@@ -68,7 +68,7 @@ public class PostgreSqlGenerator extends AbstractSqlGenerator {
     @Override
     protected CreateTableSqLInfo doGenerateCreateTableSql(TableModel tableModel) {
         Set<Map.Entry<String, FieldModel>> entries = tableModel.getFieldModels().entrySet();
-        String createSql = (" CREATE TABLE %s ( " + cr + " %s " + cr + "); ");
+        String createSql = (" CREATE TABLE %s ( " + CR + " %s " + CR + "); ");
         String comment = " COMMENT ON COLUMN %s.%s IS '%s'; ";
         StringBuilder sb = new StringBuilder();
         StringBuilder commentSql = new StringBuilder();
@@ -76,7 +76,7 @@ public class PostgreSqlGenerator extends AbstractSqlGenerator {
         int i = 1;
         if (StringUtils.hasText(tableModel.getContent())) {
             commentSql.append(" COMMENT ON TABLE ").append(tableModel.getTableName()).append(String.format(" IS '%s';", tableModel.getContent()));
-            commentSql.append(cr);
+            commentSql.append(CR);
         }
         for (Map.Entry<String, FieldModel> entry : entries) {
             FieldDbModel dbModel = entry.getValue().getFieldDbModel();
@@ -105,7 +105,7 @@ public class PostgreSqlGenerator extends AbstractSqlGenerator {
             }
             if (StringUtils.hasText(dbModel.getContent())) {
                 commentSql.append(String.format(comment, tableModel.getTableName(), dbModel.getFieldName(), dbModel.getContent()));
-                commentSql.append(cr);
+                commentSql.append(CR);
             }
 
             if (i < entries.size()) {
@@ -114,7 +114,7 @@ public class PostgreSqlGenerator extends AbstractSqlGenerator {
                 sb.append("  ");
             }
             i++;
-            sb.append(cr);
+            sb.append(CR);
         }
         if (!primaryKey.isEmpty()) {
             sb.append(", PRIMARY KEY (").append(primaryKey).append(")");
@@ -122,7 +122,7 @@ public class PostgreSqlGenerator extends AbstractSqlGenerator {
         String sql = String.format(createSql, tableModel.getTableName(), sb);
         String dropTableSql = getDropTableSql(tableModel);
         log.debug("create sql success: {}", sql + commentSql);
-        return CreateTableSqLInfo.builder().dropSql(dropTableSql).createSql(sql + commentSql).cr(cr).build();
+        return CreateTableSqLInfo.builder().dropSql(dropTableSql).createSql(sql + commentSql).cr(CR).build();
     }
 
     @Override

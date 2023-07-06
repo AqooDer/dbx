@@ -7,17 +7,17 @@ package com.dbx.core.constans;
  */
 public enum DbType {
     /**
-     * mysql
+     * MYSQL
      */
-    mysql(JdbcConstants.MYSQL, JdbcConstants.MYSQL_DRIVER),
+    MYSQL(JdbcConstants.MYSQL, JdbcConstants.MYSQL_DRIVER),
 
-    mariadb(JdbcConstants.MARIADB, JdbcConstants.MARIADB_DRIVER),
+    MARIADB(JdbcConstants.MARIADB, JdbcConstants.MARIADB_DRIVER),
 
-    oracle(JdbcConstants.ORACLE, JdbcConstants.ORACLE_DRIVER),
+    ORACLE(JdbcConstants.ORACLE, JdbcConstants.ORACLE_DRIVER),
 
-    sqlserver(JdbcConstants.SQL_SERVER, JdbcConstants.SQL_SERVER_DRIVER),
+    SQLSERVER(JdbcConstants.SQL_SERVER, JdbcConstants.SQL_SERVER_DRIVER),
 
-    postgresql(JdbcConstants.POSTGRESQL, JdbcConstants.POSTGRESQL_DRIVER),
+    POSTGRESQL(JdbcConstants.POSTGRESQL, JdbcConstants.POSTGRESQL_DRIVER),
     ;
 
     /**

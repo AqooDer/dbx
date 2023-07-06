@@ -43,8 +43,6 @@ public class FieldJavaModel {
     private String defaultValue;
 
 
-    //private boolean fixedLength;
-
 
     public FieldJavaModel copy(String fileName) {
         FieldJavaModel fieldJavaModel = new FieldJavaModel();
@@ -56,7 +54,6 @@ public class FieldJavaModel {
         fieldJavaModel.setLength(this.length);
         fieldJavaModel.setDecimalDigits(this.decimalDigits);
         fieldJavaModel.setDefaultValue(this.defaultValue);
-        //fieldJavaModel.setFixedLength(this.fixedLength);
         return fieldJavaModel;
     }
 

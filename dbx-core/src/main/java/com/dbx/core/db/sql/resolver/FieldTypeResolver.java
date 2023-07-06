@@ -57,7 +57,7 @@ public interface FieldTypeResolver {
      */
     default Predicate<FieldJavaType> matchJavaType(Boolean bool, FieldJavaType... values) {
         return (s -> {
-            if (bool) {
+            if (Boolean.TRUE.equals(bool)) {
                 for (FieldJavaType value : values) {
                     if (s == value) {
                         return true;
@@ -85,10 +85,8 @@ public interface FieldTypeResolver {
 
     default Predicate<String> matchDbType(Boolean bool, String value) {
         return (s -> {
-            if (bool) {
-                if (s.equals(value)) {
+            if (Boolean.TRUE.equals(bool) && (s.equals(value))) {
                     return true;
-                }
             }
             return false;
         });
@@ -97,10 +95,9 @@ public interface FieldTypeResolver {
     default Predicate<String> matchDbType(String... values) {
         return (s -> {
             for (String value : values) {
-                if (s.contains("(")) {
-                    if (s.contains(value)) {
+                if (s.contains("(") && (s.contains(value))) {
                         return true;
-                    }
+
                 }
                 if (s.equals(value)) {
                     return true;

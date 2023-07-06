@@ -29,16 +29,16 @@ public class AnnotationTableRowValueMapperDefinition implements TableRowValueMap
 
     private ValueFormat valueFormat;
 
-    private final TableModel SourceValueTableModel;
+    private final TableModel sourceValueTableModel;
 
     private TableValueExecStatus status = TableValueExecStatus.PENDING;
 
     public AnnotationTableRowValueMapperDefinition(Meson meson, TableMapperDefinition mapperDefinition) {
         this.id = meson.getConfig().getName();
         this.mapperDefinition = mapperDefinition;
-        this.SourceValueTableModel = meson.getSourceTableModel();
+        this.sourceValueTableModel = meson.getSourceTableModel();
         MapperTable mapperTable = meson.getMapperTable();
-        if (!mapperTable.customFormatValue().getName().equals(ValueFormat.class.getName())) {
+        if (!mapperTable.getClass().isAssignableFrom(ValueFormat.class)) {
             try {
                 this.valueFormat = mapperTable.customFormatValue().newInstance();
             } catch (InstantiationException e) {
@@ -63,7 +63,7 @@ public class AnnotationTableRowValueMapperDefinition implements TableRowValueMap
 
     @Override
     public TableModel getSourceValueTableModel() {
-        return SourceValueTableModel;
+        return sourceValueTableModel;
     }
 
     @Override

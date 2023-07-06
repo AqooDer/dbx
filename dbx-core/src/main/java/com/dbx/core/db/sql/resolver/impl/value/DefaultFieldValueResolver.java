@@ -32,7 +32,7 @@ public class DefaultFieldValueResolver implements FieldValueResolver {
             case FixedString:
                 value = get(object, () -> null, () -> {
                     if (object instanceof String) {
-                        // 支持 mysql postgre sqlserver oracle
+                        // 支持 MYSQL postgre SQLSERVER ORACLE
                         return String.format("'%s'", ((String) object).replace("'", "''")); // 转译sql语句
                     } else {
                         return String.format("'%s'", object.toString());

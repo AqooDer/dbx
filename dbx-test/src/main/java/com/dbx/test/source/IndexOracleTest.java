@@ -27,7 +27,7 @@ public class IndexOracleTest implements MapperConfig {
         config.setEnableInsertData(false);
         config.setEnableCreateSchemaScript(true);
 
-        config.setDbTransferType(DbTransferType.instance(DbType.oracle, DbType.mysql));
+        config.setDbTransferType(DbTransferType.instance(DbType.ORACLE, DbType.MYSQL));
         config.setSourceConfig(MapperDataSourceConfig.builder().name("gs_report")
                 .url("jdbc:oracle:thin:@127.0.0.1:1521:oracle")
                 .username("test").password("test").driver("com.mysql.cj.jdbc.Driver").build());

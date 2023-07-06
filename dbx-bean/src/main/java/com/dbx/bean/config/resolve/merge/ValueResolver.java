@@ -23,13 +23,8 @@ import java.util.function.Function;
  */
 public class ValueResolver {
 
-
-    public ValueResolver() {
-
-    }
-
     /**
-     * 值的设置：value设置关系 ： customFormatValue > defaultFormatValue > defaultValue > ref >  source
+     * 值的设置：value设置关系 ： customFormatValue > defaultFormatValue > defaultValue > ref >  SOURCE
      *
      * @return TableValueMapperDefinition
      */

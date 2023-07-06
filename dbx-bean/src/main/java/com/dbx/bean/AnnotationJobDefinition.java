@@ -67,7 +67,7 @@ public class AnnotationJobDefinition implements JobDefinition {
 
     public void addMapperDefinition(@NonNull TableMapperDefinition mapperDefinition) {
         if (mapperIdLink.containsKey(mapperDefinition.getId())) {
-            throw new JobDefinitionException(String.format("the source '%s' ddl definition is already exist,please check.",
+            throw new JobDefinitionException(String.format("the SOURCE '%s' ddl definition is already exist,please check.",
                     mapperDefinition.getTableModel().getTableName()));
         }
         mapperIdLink.put(mapperDefinition.getId(), mapperDefinition);

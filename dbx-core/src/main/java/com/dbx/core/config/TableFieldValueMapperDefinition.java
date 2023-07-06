@@ -18,7 +18,7 @@ public interface TableFieldValueMapperDefinition {
     /**
      * 获取该字段的表定义信息
      * 注意：
-     * 子表不能有"source"字段。
+     * 子表不能有"SOURCE"字段。
      *
      * @return 该字段的表定义信息
      */

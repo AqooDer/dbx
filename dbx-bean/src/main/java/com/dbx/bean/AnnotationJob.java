@@ -62,7 +62,6 @@ public class AnnotationJob extends AbstractJob {
         }
 
         public void resolve(AnnotationJobDefinition jobDefinition) throws JobDefinitionException {
-            //container.getMulticaster().multicastEvent(new MapperConfigResolingEvent(this));
             // 处理所有root级别的config
             for (MapperConfig mapperConfig : mapperConfigs) {
                 Class<?>[] mapperConfigClass = mapperConfig.getMapperConfigs();
@@ -72,7 +71,6 @@ public class AnnotationJob extends AbstractJob {
                 }
                 // 注入数据库连接器
                 // 注册监听器
-                //mapperConfig.registerDbTransferListener(multicaster);
                 // 根据目标表id 合并class
                 Arrays.stream(mapperConfigClass).forEach(mapperClass -> doMergeClass(jobDefinition, mapperConfig, mapperClass, null));
             }

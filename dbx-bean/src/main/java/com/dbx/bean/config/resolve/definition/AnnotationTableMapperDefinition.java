@@ -4,8 +4,6 @@ import com.dbx.bean.config.MapperConfig;
 import com.dbx.bean.config.resolve.Meson;
 import com.dbx.core.config.TableMapperDefinition;
 import com.dbx.core.config.TableRowValueMapperDefinition;
-import com.dbx.core.db.DataSourceMapping;
-import com.dbx.core.db.datasource.model.FieldModel;
 import com.dbx.core.db.datasource.model.TableModel;
 import com.dbx.core.job.JobDefinition;
 import lombok.NonNull;
@@ -34,13 +32,11 @@ public class AnnotationTableMapperDefinition implements TableMapperDefinition {
      */
     private final MapperConfig mapperConfig;
 
-    //private final MapperProperties mapperProperties;
 
     private JobDefinition jobDefinition;
 
     private TableModel tableModel;
 
-    private final Map<String, String> sourceTargetFieldNameMap;
 
 
     /**
@@ -55,34 +51,16 @@ public class AnnotationTableMapperDefinition implements TableMapperDefinition {
         this.meson = meson;
         this.mapperConfig = meson.getMapperConfig();
         this.valueConfigs = valueConfigs;
-        /*JobConfig mpc = mapperConfig.();
-        boolean disableExportSql = null != mpc.disableExportSql() && mpc.disableExportSql();
-        boolean isMergeDataSqlInLog = null != mpc.isMergeDataSqlInLog() && mpc.isMergeDataSqlInLog();
-        boolean disableCreateTable = null != mpc.disableCreateTable() && mpc.disableCreateTable();
-        boolean disableTargetTableDdlVerify = null == mpc.disableTargetTableDdlVerify() || mpc.disableTargetTableDdlVerify();
-        this.valueConfigs = valueConfigs;
-        this.mapperProperties =
-                MapperProperties.builder()
-                        .exportSql(!disableExportSql)
-                        .mergeDataSql(isMergeDataSqlInLog)
-                        .createTable(!disableCreateTable)
-                        .comparisonDdl(!disableTargetTableDdlVerify).build();*/
 
         this.fieldMapperDefinitions = new HashMap<>();
         this.jobDefinition = jobDefinition;
-        this.sourceTargetFieldNameMap = new HashMap<>();
     }
 
-    @Override
-    public @NonNull DataSourceMapping getDataSourceMapping() {
-        return jobDefinition.getJobTool().getDataSourceMapping();
-    }
 
     @Override
     public @NonNull String getId() {
         return meson.getMapperDefinitionId();
     }
-
 
     @Override
     public TableModel getTableModel() {
@@ -107,24 +85,8 @@ public class AnnotationTableMapperDefinition implements TableMapperDefinition {
 
     public void setTableModel(TableModel tableModel) {
         this.tableModel = tableModel;
-        for (FieldModel value : tableModel.getFieldModels().values()) {
-            if (value.getSource() != null) {
-                sourceTargetFieldNameMap.put(value.getSource().getFieldDbModel().getFieldName(), value.getFieldDbModel().getFieldName());
-            }
-        }
     }
 
-    public Map<String, String> getSourceTargetFieldNameMap() {
-        return sourceTargetFieldNameMap;
-    }
-
-    public MapperConfig getMapperConfig() {
-        return mapperConfig;
-    }
-
-    public @NonNull Class<?> getDdlConfig() {
-        return meson.getConfig();
-    }
 
     public Set<Class<?>> getValueConfig() {
         return valueConfigs;

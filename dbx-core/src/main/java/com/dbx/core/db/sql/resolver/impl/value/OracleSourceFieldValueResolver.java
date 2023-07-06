@@ -27,7 +27,7 @@ public class OracleSourceFieldValueResolver implements FieldValueResolver {
         if (type == FieldJavaType.String || type == FieldJavaType.FixedString) {
             if (object instanceof byte[]) {
                 FieldModel source = tfm.getTargetFieldModel().getSource();
-                if (source != null && source.getFieldDbModel().getType().contains(OracleFieldTypeEnum.raw.name())) {
+                if (source != null && source.getFieldDbModel().getType().contains(OracleFieldTypeEnum.RAW.name())) {
                     value = String.format("'%s'", oracleRawToString((byte[]) object));
                 }
             }
@@ -45,7 +45,7 @@ public class OracleSourceFieldValueResolver implements FieldValueResolver {
         if (type == FieldJavaType.String) {
             if (object instanceof byte[]) {
                 FieldModel source = tfm.getTargetFieldModel().getSource();
-                if (source != null && source.getFieldDbModel().getType().contains(OracleFieldTypeEnum.raw.name())) {
+                if (source != null && source.getFieldDbModel().getType().contains(OracleFieldTypeEnum.RAW.name())) {
                     return oracleRawToString((byte[]) object);
                 }
             }
@@ -64,7 +64,7 @@ public class OracleSourceFieldValueResolver implements FieldValueResolver {
     }
 
     /**
-     * oracle raw 数据转换成String
+     * ORACLE RAW 数据转换成String
      *
      * @param dec
      * @return

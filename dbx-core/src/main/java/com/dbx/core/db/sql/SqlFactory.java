@@ -33,32 +33,32 @@ public final class SqlFactory {
     public static Map<DbType, Supplier<FieldTypeResolver>> fieldTypeResolverMap = new HashMap<>();
 
     static {
-        sqlGeneratorMap.put(DbType.mysql, MysqlSqlGenerator::new);
-        sqlGeneratorMap.put(DbType.postgresql, PostgreSqlGenerator::new);
-        sqlGeneratorMap.put(DbType.oracle, OracleSqlGenerator::new);
+        sqlGeneratorMap.put(DbType.MYSQL, MysqlSqlGenerator::new);
+        sqlGeneratorMap.put(DbType.POSTGRESQL, PostgreSqlGenerator::new);
+        sqlGeneratorMap.put(DbType.ORACLE, OracleSqlGenerator::new);
     }
 
     static {
-        FieldValueMap.put(DbType.mysql, DbType.mysql, DefaultFieldValueResolver::new);
-        FieldValueMap.put(DbType.mysql, DbType.postgresql, DefaultFieldValueResolver::new);
-        FieldValueMap.put(DbType.mysql, DbType.oracle, () -> new OracleTargetFieldValueResolve(new DefaultFieldValueResolver()));
-        //FieldValueMap.put(mysql, sqlserver, DefaultFieldValueResolver::new);
+        FieldValueMap.put(DbType.MYSQL, DbType.MYSQL, DefaultFieldValueResolver::new);
+        FieldValueMap.put(DbType.MYSQL, DbType.POSTGRESQL, DefaultFieldValueResolver::new);
+        FieldValueMap.put(DbType.MYSQL, DbType.ORACLE, () -> new OracleTargetFieldValueResolve(new DefaultFieldValueResolver()));
+        //FieldValueMap.put(MYSQL, SQLSERVER, DefaultFieldValueResolver::new);
 
-        FieldValueMap.put(DbType.postgresql, DbType.postgresql, DefaultFieldValueResolver::new);
-        FieldValueMap.put(DbType.postgresql, DbType.mysql, DefaultFieldValueResolver::new);
-        //FieldValueMap.put(postgresql, oracle, DefaultFieldValueResolver::new);
-        //FieldValueMap.put(postgresql, sqlserver, DefaultFieldValueResolver::new);
+        FieldValueMap.put(DbType.POSTGRESQL, DbType.POSTGRESQL, DefaultFieldValueResolver::new);
+        FieldValueMap.put(DbType.POSTGRESQL, DbType.MYSQL, DefaultFieldValueResolver::new);
+        //FieldValueMap.put(POSTGRESQL, ORACLE, DefaultFieldValueResolver::new);
+        //FieldValueMap.put(POSTGRESQL, SQLSERVER, DefaultFieldValueResolver::new);
 
-        //FieldValueMap.put(oracle, oracle, () -> new OracleFieldValueResolver(new DefaultFieldValueResolver()));
-        FieldValueMap.put(DbType.oracle, DbType.mysql, () -> new OracleSourceFieldValueResolver(new DefaultFieldValueResolver()));
-        FieldValueMap.put(DbType.oracle, DbType.postgresql, () -> new OracleSourceFieldValueResolver(new DefaultFieldValueResolver()));
-        //FieldValueMap.put(oracle, sqlserver, () -> new OracleFieldValueResolver(new DefaultFieldValueResolver()));
+        //FieldValueMap.put(ORACLE, ORACLE, () -> new OracleFieldValueResolver(new DefaultFieldValueResolver()));
+        FieldValueMap.put(DbType.ORACLE, DbType.MYSQL, () -> new OracleSourceFieldValueResolver(new DefaultFieldValueResolver()));
+        FieldValueMap.put(DbType.ORACLE, DbType.POSTGRESQL, () -> new OracleSourceFieldValueResolver(new DefaultFieldValueResolver()));
+        //FieldValueMap.put(ORACLE, SQLSERVER, () -> new OracleFieldValueResolver(new DefaultFieldValueResolver()));
     }
 
     static {
-        fieldTypeResolverMap.put(DbType.mysql, MysqlFieldTypeResolver::new);
-        fieldTypeResolverMap.put(DbType.postgresql, PostgreSqlFieldTypeResolver::new);
-        fieldTypeResolverMap.put(DbType.oracle, OracleFieldTypeResolver::new);
+        fieldTypeResolverMap.put(DbType.MYSQL, MysqlFieldTypeResolver::new);
+        fieldTypeResolverMap.put(DbType.POSTGRESQL, PostgreSqlFieldTypeResolver::new);
+        fieldTypeResolverMap.put(DbType.ORACLE, OracleFieldTypeResolver::new);
 
     }
 

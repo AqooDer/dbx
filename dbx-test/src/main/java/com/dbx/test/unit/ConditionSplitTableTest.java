@@ -65,7 +65,7 @@ public class ConditionSplitTableTest implements MapperConfig {
 
         @Override
         public void end(ValueContext valueContext) {
-
+            // do nothing
         }
     }
 }

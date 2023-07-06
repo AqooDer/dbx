@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public abstract class AbstractSqlGenerator implements SqlGenerator {
 
-    protected static final String cr = System.getProperty("line.separator");
+    protected static final String CR = System.getProperty("line.separator");
 
     public static final String DROP_TABLE_SQL = "DROP TABLE IF EXISTS %s;";
 

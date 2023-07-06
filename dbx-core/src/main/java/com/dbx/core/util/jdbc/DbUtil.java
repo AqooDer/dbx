@@ -1,6 +1,6 @@
 package com.dbx.core.util.jdbc;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.StrPool;
 import com.dbx.core.constans.DbType;
 import com.dbx.core.constans.FieldJavaType;
 import com.dbx.core.constans.JdbcConstants;
@@ -19,18 +19,18 @@ public class DbUtil extends JdbcConstants {
         if (dbUrl == null) {
             throw new JobException("the jdbc connection url is null , please checked. ");
         }
-        if (dbUrl.startsWith("jdbc:mysql:") || dbUrl.startsWith("jdbc:cobar:") || dbUrl.startsWith("jdbc:log4jdbc:mysql:")) {
-            return DbType.mysql;
-        } else if (dbUrl.startsWith("jdbc:mariadb:")) {
-            return DbType.mariadb;
-        } else if (dbUrl.startsWith("jdbc:oracle:") || dbUrl.startsWith("jdbc:log4jdbc:oracle:")) {
-            return DbType.oracle;
+        if (dbUrl.startsWith("jdbc:MYSQL:") || dbUrl.startsWith("jdbc:cobar:") || dbUrl.startsWith("jdbc:log4jdbc:MYSQL:")) {
+            return DbType.MYSQL;
+        } else if (dbUrl.startsWith("jdbc:MARIADB:")) {
+            return DbType.MARIADB;
+        } else if (dbUrl.startsWith("jdbc:ORACLE:") || dbUrl.startsWith("jdbc:log4jdbc:ORACLE:")) {
+            return DbType.ORACLE;
         } else if (dbUrl.startsWith("jdbc:microsoft:") || dbUrl.startsWith("jdbc:log4jdbc:microsoft:")) {
-            return DbType.sqlserver;
-        } else if (dbUrl.startsWith("jdbc:sqlserver:") || dbUrl.startsWith("jdbc:log4jdbc:sqlserver:")) {
-            return DbType.sqlserver;
-        } else if (dbUrl.startsWith("jdbc:postgresql:") || dbUrl.startsWith("jdbc:log4jdbc:postgresql:")) {
-            return DbType.postgresql;
+            return DbType.SQLSERVER;
+        } else if (dbUrl.startsWith("jdbc:SQLSERVER:") || dbUrl.startsWith("jdbc:log4jdbc:SQLSERVER:")) {
+            return DbType.SQLSERVER;
+        } else if (dbUrl.startsWith("jdbc:POSTGRESQL:") || dbUrl.startsWith("jdbc:log4jdbc:POSTGRESQL:")) {
+            return DbType.POSTGRESQL;
         } else {
             throw new JobException("the jdbc connection url is not be support. ");
         }
@@ -81,7 +81,7 @@ public class DbUtil extends JdbcConstants {
     public static String getDecimalPrecision(int length, int precision) {
         int l = length >= 19 ? 19 : Math.max(length, 14);
         int r = precision >= l || precision <= 0 ? 2 : precision;
-        return l + StrUtil.COMMA + r;
+        return l + StrPool.COMMA + r;
     }
 
 
@@ -112,95 +112,4 @@ public class DbUtil extends JdbcConstants {
         return fieldJavaModel;
     }
 
-    public static void main(String[] args) {
-        System.out.println(decompose(new FieldDbModel(), "int"));
-        System.out.println(decompose(new FieldDbModel(), "varchar(64)"));
-        System.out.println(decompose(new FieldDbModel(), "float(23,12)"));
-    }
-
-
-   /* public static String getDbType(String rawUrl) {
-        if (rawUrl == null) {
-            return null;
-        }
-
-        if (rawUrl.startsWith("jdbc:derby:") || rawUrl.startsWith("jdbc:log4jdbc:derby:")) {
-            return DERBY;
-        } else if (rawUrl.startsWith("jdbc:mysql:") || rawUrl.startsWith("jdbc:cobar:")
-                || rawUrl.startsWith("jdbc:log4jdbc:mysql:")) {
-            return MYSQL;
-        } else if (rawUrl.startsWith("jdbc:mariadb:")) {
-            return MARIADB;
-        } else if (rawUrl.startsWith("jdbc:oracle:") || rawUrl.startsWith("jdbc:log4jdbc:oracle:")) {
-            return ORACLE;
-        } else if (rawUrl.startsWith("jdbc:alibaba:oracle:")) {
-            return ALI_ORACLE;
-        } else if (rawUrl.startsWith("jdbc:microsoft:") || rawUrl.startsWith("jdbc:log4jdbc:microsoft:")) {
-            return SQL_SERVER;
-        } else if (rawUrl.startsWith("jdbc:sqlserver:") || rawUrl.startsWith("jdbc:log4jdbc:sqlserver:")) {
-            return SQL_SERVER;
-        } else if (rawUrl.startsWith("jdbc:sybase:Tds:") || rawUrl.startsWith("jdbc:log4jdbc:sybase:")) {
-            return SYBASE;
-        } else if (rawUrl.startsWith("jdbc:jtds:") || rawUrl.startsWith("jdbc:log4jdbc:jtds:")) {
-            return JTDS;
-        } else if (rawUrl.startsWith("jdbc:fake:") || rawUrl.startsWith("jdbc:mock:")) {
-            return MOCK;
-        } else if (rawUrl.startsWith("jdbc:postgresql:") || rawUrl.startsWith("jdbc:log4jdbc:postgresql:")) {
-            return POSTGRESQL;
-        } else if (rawUrl.startsWith("jdbc:edb:")) {
-            return ENTERPRISEDB;
-        } else if (rawUrl.startsWith("jdbc:hsqldb:") || rawUrl.startsWith("jdbc:log4jdbc:hsqldb:")) {
-            return HSQL;
-        } else if (rawUrl.startsWith("jdbc:odps:")) {
-            return ODPS;
-        } else if (rawUrl.startsWith("jdbc:db2:")) {
-            return DB2;
-        } else if (rawUrl.startsWith("jdbc:sqlite:")) {
-            return SQLITE;
-        } else if (rawUrl.startsWith("jdbc:ingres:")) {
-            return "ingres";
-        } else if (rawUrl.startsWith("jdbc:h2:") || rawUrl.startsWith("jdbc:log4jdbc:h2:")) {
-            return H2;
-        } else if (rawUrl.startsWith("jdbc:mckoi:")) {
-            return "mckoi";
-        } else if (rawUrl.startsWith("jdbc:cloudscape:")) {
-            return "cloudscape";
-        } else if (rawUrl.startsWith("jdbc:informix-sqli:") || rawUrl.startsWith("jdbc:log4jdbc:informix-sqli:")) {
-            return "informix";
-        } else if (rawUrl.startsWith("jdbc:timesten:")) {
-            return "timesten";
-        } else if (rawUrl.startsWith("jdbc:as400:")) {
-            return "as400";
-        } else if (rawUrl.startsWith("jdbc:sapdb:")) {
-            return "sapdb";
-        } else if (rawUrl.startsWith("jdbc:JSQLConnect:")) {
-            return "JSQLConnect";
-        } else if (rawUrl.startsWith("jdbc:JTurbo:")) {
-            return "JTurbo";
-        } else if (rawUrl.startsWith("jdbc:firebirdsql:")) {
-            return "firebirdsql";
-        } else if (rawUrl.startsWith("jdbc:interbase:")) {
-            return "interbase";
-        } else if (rawUrl.startsWith("jdbc:pointbase:")) {
-            return "pointbase";
-        } else if (rawUrl.startsWith("jdbc:edbc:")) {
-            return "edbc";
-        } else if (rawUrl.startsWith("jdbc:mimer:multi1:")) {
-            return "mimer";
-        } else if (rawUrl.startsWith("jdbc:dm:")) {
-            return JdbcConstants.DM;
-        } else if (rawUrl.startsWith("jdbc:kingbase:")) {
-            return JdbcConstants.KINGBASE;
-        } else if (rawUrl.startsWith("jdbc:log4jdbc:")) {
-            return LOG4JDBC;
-        } else if (rawUrl.startsWith("jdbc:hive:")) {
-            return HIVE;
-        } else if (rawUrl.startsWith("jdbc:hive2:")) {
-            return HIVE;
-        } else if (rawUrl.startsWith("jdbc:phoenix:")) {
-            return PHOENIX;
-        } else {
-            return null;
-        }
-    }*/
 }

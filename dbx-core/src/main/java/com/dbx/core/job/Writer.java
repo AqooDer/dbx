@@ -3,7 +3,7 @@ package com.dbx.core.job;
 /**
  * 输出数据
  *
- * @return
+ * @deprecated 用不到
  */
 @Deprecated
 public interface Writer<W> {

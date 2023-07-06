@@ -23,7 +23,7 @@ public class FieldModel {
     private FieldJavaModel fieldJavaModel;
 
     /**
-     * source来源 0 本身， 1 superSource 2
+     * source来源 0 本身， 1 SUPER_SOURCE 2
      */
     private FieldType sourceFrom;
 
