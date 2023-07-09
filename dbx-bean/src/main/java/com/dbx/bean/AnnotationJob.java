@@ -205,12 +205,12 @@ public class AnnotationJob extends AbstractJob {
 
         @Override
         public Predicate<Sets.SetView<String>> match() {
-            return (v) -> !set.isEmpty();
+            return v -> !set.isEmpty();
         }
 
         @Override
         public Function<Sets.SetView<String>, Object> executor() {
-            return (v) -> {
+            return v -> {
                 throw new JobDefinitionException(String.format("field definition error，%s Fields appear in both %s and %s ", set, name1, name2));
             };
         }

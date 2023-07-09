@@ -13,6 +13,7 @@ import java.util.List;
  * @author Aqoo
  */
 public interface SqlGenerator {
+    String DEFAULT_NULL_SQL_SEGMENT = " DEFAULT NULL ";
     /**
      * 根据字段配置处理生成建表DDL语句
      *

@@ -15,6 +15,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ClassUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +39,7 @@ public class AnnotationJobFactory implements JobFactory {
         init(args);
     }
 
-    public AnnotationJobFactory(String id, String[] args, JobConfig jobConfig, List<Class<? extends MapperConfig>> mapperConfigs) throws Exception {
+    public AnnotationJobFactory(String id, String[] args, JobConfig jobConfig, List<Class<? extends MapperConfig>> mapperConfigs) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         this.id = id;
         this.args = args;
         this.jobConfig = jobConfig;
@@ -46,7 +47,7 @@ public class AnnotationJobFactory implements JobFactory {
     }
 
     @SafeVarargs
-    public AnnotationJobFactory(String id, String[] args, JobConfig jobConfig, Class<? extends MapperConfig>... mapperConfigs) throws Exception {
+    public AnnotationJobFactory(String id, String[] args, JobConfig jobConfig, Class<? extends MapperConfig>... mapperConfigs) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         this.id = id;
         this.args = args;
         this.jobConfig = jobConfig;
@@ -77,10 +78,8 @@ public class AnnotationJobFactory implements JobFactory {
 
             // 常见表
             if (jobConfig.enableCreateTable() || jobConfig.enableCreateSchemaScript()) {
-                if (jobConfig.enableCreateTable() && jobDefinition.getJobTool().getDataSourceMapping().getTargetWrapper() == null) {
-                    if (targetWrapper == null) {
-                        throw new JobException("The TARGET database is not configured for connection, please check the configuration");
-                    }
+                if (jobConfig.enableCreateTable() && targetWrapper == null) {
+                    throw new JobException("The TARGET database is not configured for connection, please check the configuration");
                 }
                 annotationJob.getTransformers().add(new SchemaTransformer(jobDefinition) {
 
@@ -89,10 +88,8 @@ public class AnnotationJobFactory implements JobFactory {
 
 
             if (jobConfig.enableInsertData() || jobConfig.enableCreateDataScript()) {
-                if (jobConfig.enableInsertData() && jobDefinition.getJobTool().getDataSourceMapping().getTargetWrapper() == null) {
-                    if (targetWrapper == null) {
-                        throw new JobException("The TARGET database is not configured for connection, please check the configuration");
-                    }
+                if (jobConfig.enableInsertData() && targetWrapper == null) {
+                    throw new JobException("The TARGET database is not configured for connection, please check the configuration");
                 }
                 annotationJob.getTransformers().add(new DataTransformer(jobDefinition) {
                 });
@@ -110,7 +107,7 @@ public class AnnotationJobFactory implements JobFactory {
      * @see MapperConfig
      */
     @SuppressWarnings("unchecked")
-    private void init(String[] args) throws Exception {
+    private void init(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         List<Class<? extends MapperConfig>> list = new ArrayList<>();
         Class<?> main = deduceMainApplicationClass();
         List<String> strings = ClassUtil.scanClasses(this, Objects.requireNonNull(main).getPackage().getName());
@@ -126,7 +123,7 @@ public class AnnotationJobFactory implements JobFactory {
     }
 
 
-    private void init(String[] args, List<Class<? extends MapperConfig>> mapperConfigs) throws Exception {
+    private void init(String[] args, List<Class<? extends MapperConfig>> mapperConfigs) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         if (mapperConfigs == null || mapperConfigs.isEmpty()) {
             throw new JobDefinitionException("mapperConfigs cannot be empty,please check");
         }
@@ -137,7 +134,7 @@ public class AnnotationJobFactory implements JobFactory {
         init(args, list.toArray(new MapperConfig[0]));
     }
 
-    private void init(String[] args, Class<? extends MapperConfig>[] mapperConfigs) throws Exception {
+    private void init(String[] args, Class<? extends MapperConfig>[] mapperConfigs) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         if (mapperConfigs == null || mapperConfigs.length == 0) {
             throw new JobDefinitionException("mapperConfig cannot be empty,please check");
         }
@@ -170,6 +167,7 @@ public class AnnotationJobFactory implements JobFactory {
                 }
             }
         } catch (ClassNotFoundException ignored) {
+            //  the block empty on purpose
         }
         return null;
     }

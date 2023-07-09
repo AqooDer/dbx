@@ -32,11 +32,7 @@ public class SqlScriptWriter {
     private static final byte[] CR = System.lineSeparator().getBytes(StandardCharsets.UTF_8);
 
     static {
-        String property = System.getProperty("dbx.log.enable");
-        // 默认开启日志记录
-        if (StringUtils.hasText(property)) {
-            boolean out = Boolean.parseBoolean(property);
-        }
+
         // 获取下项目根路径
         String path = System.getProperty("dbx.log.dir");
         if (!StringUtils.hasText(path)) {
@@ -74,7 +70,6 @@ public class SqlScriptWriter {
 
     static class FileWriteTask implements Runnable {
 
-        //public static final Map<String, Integer> ALREADY_WRITE_SQL = new ConcurrentHashMap<>();
         private final boolean mergerDataSql;
         private final File logDir;
         private final boolean ddlSql;
@@ -101,7 +96,7 @@ public class SqlScriptWriter {
             id = null;
         }
 
-        private File getFile(String fileName) throws FontFormatException {
+        private File getFile(String fileName) {
             if (!StringUtils.hasText(scope)) {
                 throw new JobException("the scope is null.");
             }
@@ -129,8 +124,8 @@ public class SqlScriptWriter {
             } else {
                 String fileName = mergerDataSql ? String.format("dbx_%s_DATA.sql", scope) : String.format("dbx_%s.sql", id);
                 try (FileOutputStream ps = new FileOutputStream(getFile(fileName), true)) {
-                    for (String sql : sql) {
-                        ps.write((sql + ";").getBytes(StandardCharsets.UTF_8));
+                    for (String currentSql : sql) {
+                        ps.write((currentSql + ";").getBytes(StandardCharsets.UTF_8));
                         ps.write(CR);
                         ps.write(CR);
                     }

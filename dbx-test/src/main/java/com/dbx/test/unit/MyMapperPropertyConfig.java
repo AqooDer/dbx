@@ -80,9 +80,6 @@ public class MyMapperPropertyConfig implements JobConfig {
         return targetConfig;
     }
 
-    public MyMapperPropertyConfig() {
-
-    }
 
     public static JobConfig getMapperPropertyConfig() {
         MyMapperPropertyConfig config = new MyMapperPropertyConfig();

@@ -84,20 +84,19 @@ public class PostgreSqlGenerator extends AbstractSqlGenerator {
             sb.append(dbModel.getType());
             boolean nullable = dbModel.getNullable();
             String defaultValue = dbModel.getDefaultValue();
-            if (dbModel.getPk()) {
+            if (Boolean.TRUE.equals(dbModel.getPk())) {
                 sb.append(" NOT NULL ");
                 primaryKey = dbModel.getFieldName();
             } else {
                 if (nullable) {
-                    sb.append(" DEFAULT NULL");
+                    sb.append(DEFAULT_NULL_SQL_SEGMENT);
                 } else if (Objects.nonNull(defaultValue) && !defaultValue.isEmpty()) {
                     if (defaultValue.equalsIgnoreCase("NULL")) {
-                        sb.append(" DEFAULT NULL");
+                        sb.append(DEFAULT_NULL_SQL_SEGMENT);
                     } else if ("now()".equalsIgnoreCase(defaultValue)) {
                         sb.append(" DEFAULT now() ");
                     } else {
-                        //sb.append(String.format(" DEFAULT '%s'", defaultValue));
-                        sb.append(" DEFAULT NULL");
+                        sb.append(DEFAULT_NULL_SQL_SEGMENT);
                     }
                 } else {
                     sb.append(" NOT NULL");

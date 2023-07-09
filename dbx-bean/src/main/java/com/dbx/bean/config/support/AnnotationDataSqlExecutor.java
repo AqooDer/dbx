@@ -110,7 +110,7 @@ public class AnnotationDataSqlExecutor implements DataSqlExecutor {
                     .execResolve(jobTool.getDataSourceMapping().getDbTransferType(), tvm, fvm, initValue);
 
             // 判断该字段是否不能为null ，但是实际却是null (包含主键的检测)
-            if (!fieldDbModel.getNullable() && !StringUtils.hasText(writeValue)) {
+            if (Boolean.TRUE.equals(!fieldDbModel.getNullable()) && !StringUtils.hasText(writeValue)) {
                 if (parentValueContext != null) {
                     log.error(" data cannot be generated because the field value cannot be empty, but the actual value is empty . please check the parent table value definition " +
                                     "id is '{}'" +

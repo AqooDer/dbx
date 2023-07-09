@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
  */
 public class RegexUtil {
 
-    public static Pattern ORACLE_NAME_REG = Pattern.compile("([a-zA-z])([a-zA-z0-9_#$]*)");
+    public static final Pattern ORACLE_NAME_REG = Pattern.compile("([a-zA-z])([a-zA-z0-9_#$]*)");
 
     public static boolean match(Pattern pattern, String... value) {
         Matcher matcher;

@@ -168,7 +168,7 @@ public class BasicDataSourceWrapper implements DataSourceWrapper {
                 dbModel.setDefaultValue(field.get("COLUMN_DEF").toString());
                 dbModel.setContent(field.get("REMARKS").toString());
                 // 主键放置在第一个位置
-                if (dbModel.getPk()) {
+                if (Boolean.TRUE.equals(dbModel.getPk())) {
                     list.add(0, dbModel);
                 } else {
                     list.add(dbModel);
@@ -188,7 +188,7 @@ public class BasicDataSourceWrapper implements DataSourceWrapper {
                     dbModel.setNullable(rs.getInt("NULLABLE") == DatabaseMetaData.columnNullable);
                     dbModel.setDefaultValue(rs.getString("COLUMN_DEF"));
                     dbModel.setContent(rs.getString("REMARKS"));
-                    if (dbModel.getPk()) {
+                    if (Boolean.TRUE.equals(dbModel.getPk())) {
                         list.add(0, dbModel);
                     } else {
                         list.add(dbModel);
@@ -196,7 +196,7 @@ public class BasicDataSourceWrapper implements DataSourceWrapper {
                 }
             }
         }
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             throw new JobExecuteException(String.format("the table '%s' did not query the columns , please check.", tableName));
         }
         return list;
@@ -269,6 +269,7 @@ public class BasicDataSourceWrapper implements DataSourceWrapper {
             try {
                 rs.close();
             } catch (SQLException ignored) {
+                // ignored
             }
         }
     }

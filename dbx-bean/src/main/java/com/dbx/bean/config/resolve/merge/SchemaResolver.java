@@ -175,14 +175,6 @@ public class SchemaResolver {
         return FieldModel.builder().fieldJavaModel(toFieldJavaModel).fieldDbModel(fieldDbModel).source(sourceFieldModel).sourceFrom(FieldType.SOURCE).build();
     }
 
-    private FieldModel getFieldModel(String fileName, FieldJavaModel fieldJavaModel, FieldModel sourceFieldModel) {
-        FieldDbModel fieldDbModel = jobTool.getTargetFieldTypeResolver().javaModel2DbModel(fieldJavaModel);
-        FieldModel model = FieldModel.builder().fieldJavaModel(fieldJavaModel).fieldDbModel(fieldDbModel).source(sourceFieldModel).build();
-        // 转换后，替换列名
-        model.getFieldDbModel().setFieldName(fileName);
-        model.getFieldJavaModel().setFieldName(fileName);
-        return model;
-    }
 
     private TableModel initTableModel(Meson meson, TableModel sourceTableModel) {
         MapperTable mapperTable = meson.getMapperTable();
@@ -261,7 +253,7 @@ public class SchemaResolver {
 
         @Override
         public Function<Set<FieldDbModel>, FieldDbModel> executor() {
-            return (infos) -> hit;
+            return infos -> hit;
         }
     }
 }

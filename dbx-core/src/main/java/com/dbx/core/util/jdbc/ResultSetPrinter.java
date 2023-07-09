@@ -18,21 +18,20 @@ public class ResultSetPrinter {
     public static void printResultSet(ResultSet rs) throws SQLException {
         ResultSetMetaData resultSetMetaData = rs.getMetaData();
         // 获取列数
-        int ColumnCount = resultSetMetaData.getColumnCount();
+        int columnCount = resultSetMetaData.getColumnCount();
         // 保存当前列最大长度的数组
-        int[] columnMaxLengths = new int[ColumnCount];
+        int[] columnMaxLengths = new int[columnCount];
         // 缓存结果集,结果集可能有序,所以用ArrayList保存变得打乱顺序.
         ArrayList<String[]> results = new ArrayList<>();
         // 按行遍历
         while (rs.next()) {
             // 保存当前行所有列
-            String[] columnStr = new String[ColumnCount];
+            String[] columnStr = new String[columnCount];
             // 获取属性值.
-            for (int i = 0; i < ColumnCount; i++) {
+            for (int i = 0; i < columnCount; i++) {
                 // 获取一列
                 columnStr[i] = rs.getString(i + 1);
                 String columnName = resultSetMetaData.getColumnName(i + 1);
-                //int length = (columnStr[i] == null) ? 10 : columnStr[i].length();
                 // 计算当前列的最大长度 先比较当前列数据长度大小，如果为null则长度为10，在比较columnName的长度。两者取大，最后在与当前存粗的最大值比较然后 替换
                 columnMaxLengths[i] = Math.max(columnMaxLengths[i], Math.max( ((columnStr[i] == null) ? 10 : columnStr[i].length()), columnName.length()));
             }
@@ -47,8 +46,7 @@ public class ResultSetPrinter {
         String[] columnStr;
         while (iterator.hasNext()) {
             columnStr = iterator.next();
-            for (int i = 0; i < ColumnCount; i++) {
-                //System.out.printf("|%" + (columnMaxLengths[i] + 1) + "s", columnStr[i]);
+            for (int i = 0; i < columnCount; i++) {
                 System.out.printf("|%" + columnMaxLengths[i] + "s", columnStr[i]);
             }
             System.out.println("|");
@@ -68,7 +66,6 @@ public class ResultSetPrinter {
         for (int i = 0; i < columnCount; i++) {
             // %-10s表示这个字符串的长度为10,不足10的地方以空格填充,带-的表示左对齐.
             // %10s表示这个字符串的长度为10,不足10的地方以空格填充,默认右对齐
-            //System.out.printf("|%" + (columnMaxLengths[i] + 1) + "s", resultSetMetaData.getColumnName(i + 1));
             System.out.printf("|%" + columnMaxLengths[i] + "s", resultSetMetaData.getColumnName(i + 1));
         }
         System.out.println("|");
@@ -82,7 +79,6 @@ public class ResultSetPrinter {
     private static void printSeparator(int[] columnMaxLengths) {
         for (int i = 0; i < columnMaxLengths.length; i++) {
             System.out.print("+");
-            // for (int j = 0; j < columnMaxLengths[i] + 1; j++) {
             for (int j = 0; j < columnMaxLengths[i]; j++) {
                 System.out.print("-");
             }

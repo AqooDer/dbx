@@ -1,10 +1,10 @@
 package com.dbx.bean.config.resolve.merge;
 
-import com.dbx.bean.config.resolve.Meson;
-import com.dbx.bean.config.resolve.definition.AnnotationValueFormatDefinition;
 import com.dbx.bean.config.annotation.MapperField;
+import com.dbx.bean.config.resolve.Meson;
 import com.dbx.bean.config.resolve.definition.AnnotationTableFieldMapperDefinition;
 import com.dbx.bean.config.resolve.definition.AnnotationTableRowValueMapperDefinition;
+import com.dbx.bean.config.resolve.definition.AnnotationValueFormatDefinition;
 import com.dbx.bean.config.support.ValueDefaultType;
 import com.dbx.core.config.FieldValueFormatDefinition;
 import com.dbx.core.config.TableFieldValueMapperDefinition;
@@ -43,22 +43,19 @@ public class ValueResolver {
         Function<String, AnnotationTableFieldMapperDefinition> fun = k -> AnnotationTableFieldMapperDefinition.newSingleInstance
                 (mapperDefinition.getTableModel(), k, fieldModels.get(k), AnnotationValueFormatDefinition.newSource(k));
 
+
         sourceFieldModel.forEach((k, v) -> {
-            if (includeFields.isEmpty() && excludeFields.isEmpty()) {
-                // 找不到ddl定义的不要。
-                if (fieldModels.get(k) != null) {
-                    fieldValueMapperDefinitions.put(k, fun.apply(k));
-                }
+            if (includeFields.isEmpty() && excludeFields.isEmpty() && (fieldModels.get(k) != null)) {
+                fieldValueMapperDefinitions.put(k, fun.apply(k));
+
             }
-            if (!includeFields.isEmpty()) {
-                if (includeFields.contains(k) && fieldModels.get(k) != null) {
-                    fieldValueMapperDefinitions.put(k, fun.apply(k));
-                }
+            if (!includeFields.isEmpty() && (includeFields.contains(k) && fieldModels.get(k) != null)) {
+                fieldValueMapperDefinitions.put(k, fun.apply(k));
+
             }
-            if (!excludeFields.isEmpty()) {
-                if (!excludeFields.contains(k) && fieldModels.get(k) != null) {
-                    fieldValueMapperDefinitions.put(k, fun.apply(k));
-                }
+            if (!excludeFields.isEmpty() && (!excludeFields.contains(k) && fieldModels.get(k) != null)) {
+                fieldValueMapperDefinitions.put(k, fun.apply(k));
+
             }
         });
 
