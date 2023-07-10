@@ -24,7 +24,7 @@ public abstract class JobTool {
 
     protected FieldValueResolver fieldValueResolver;
 
-    public JobTool(JobConfig jobConfig) {
+    protected JobTool(JobConfig jobConfig) {
         this.dataSourceMapping = new DataSourceMapping(jobConfig.dbTransferType(), jobConfig.getSourceDataSourceConfig(), jobConfig.getTargetDataSourceConfig());
     }
 

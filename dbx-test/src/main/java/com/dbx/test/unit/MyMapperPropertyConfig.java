@@ -51,6 +51,7 @@ public class MyMapperPropertyConfig implements JobConfig {
         return enableCreateTable;
     }
 
+    @Override
     public boolean enableInsertData() {
         return enableInsertData;
     }

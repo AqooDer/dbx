@@ -84,12 +84,7 @@ public interface FieldTypeResolver {
     }
 
     default Predicate<String> matchDbType(Boolean bool, String value) {
-        return (s -> {
-            if (Boolean.TRUE.equals(bool) && (s.equals(value))) {
-                    return true;
-            }
-            return false;
-        });
+        return (s -> Boolean.TRUE.equals(bool) && (s.equals(value)));
     }
 
     default Predicate<String> matchDbType(String... values) {

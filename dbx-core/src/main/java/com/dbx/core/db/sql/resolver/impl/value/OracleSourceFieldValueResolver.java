@@ -42,13 +42,12 @@ public class OracleSourceFieldValueResolver implements FieldValueResolver {
     public Object execResolve(DbTransferType dbTransferType, TableRowValueMapperDefinition tvm, TableFieldValueMapperDefinition tfm, Object object) {
         FieldJavaModel fieldJavaModel = tfm.getTargetFieldModel().getFieldJavaModel();
         FieldJavaType type = fieldJavaModel.getFieldJavaType();
-        if (type == FieldJavaType.String) {
-            if (object instanceof byte[]) {
+        if (type == FieldJavaType.String && (object instanceof byte[])) {
                 FieldModel source = tfm.getTargetFieldModel().getSource();
                 if (source != null && source.getFieldDbModel().getType().contains(OracleFieldTypeEnum.RAW.name())) {
                     return oracleRawToString((byte[]) object);
                 }
-            }
+
         }
         return object;
     }

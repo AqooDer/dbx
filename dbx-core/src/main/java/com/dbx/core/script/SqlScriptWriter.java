@@ -6,7 +6,6 @@ import com.dbx.core.exception.JobException;
 import lombok.NonNull;
 import org.springframework.util.StringUtils;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -118,7 +117,7 @@ public class SqlScriptWriter {
                     ps.write(CR);
                     ps.write(CR);
                     ps.write((sql[0] + ";").getBytes(StandardCharsets.UTF_8));
-                } catch (IOException | FontFormatException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else {
@@ -129,7 +128,7 @@ public class SqlScriptWriter {
                         ps.write(CR);
                         ps.write(CR);
                     }
-                } catch (IOException | FontFormatException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }

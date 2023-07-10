@@ -60,6 +60,8 @@ public class OracleTargetFieldValueResolve implements FieldValueResolver {
                     return null;
                 });
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + type);
         }
         if (value == null) {
             value = defaultFieldValueResolver.writeResolve(dbTransferType, tvm, tfm, object);

@@ -32,7 +32,7 @@ public class AnnotationJobFactory implements JobFactory {
 
     private AnnotationJob annotationJob;
 
-    public AnnotationJobFactory(String id, String[] args, JobConfig jobConfig) throws Exception {
+    public AnnotationJobFactory(String id, String[] args, JobConfig jobConfig) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         this.id = id;
         this.args = args;
         this.jobConfig = jobConfig;
