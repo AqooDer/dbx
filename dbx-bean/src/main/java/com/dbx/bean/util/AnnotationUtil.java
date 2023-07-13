@@ -1,5 +1,6 @@
 package com.dbx.bean.util;
 
+import com.dbx.bean.config.annotation.MapperIndex;
 import com.dbx.bean.config.annotation.UseDdl;
 import com.dbx.bean.config.annotation.MapperField;
 import com.dbx.bean.config.annotation.MapperTable;
@@ -16,6 +17,20 @@ public class AnnotationUtil {
     public static MapperTable getMapperTable(Class<?> clazz) {
         return getAnnotation(clazz, MapperTable.class);
     }
+
+
+    public static List<MapperIndex> getMapperIndexes(Class<?> clazz) {
+        List<MapperIndex> list = new ArrayList<>();
+        if (clazz != null) {
+            MapperIndex[] annotationsByType = clazz.getAnnotationsByType(MapperIndex.class);
+            if (annotationsByType.length > 0) {
+                list.addAll(Arrays.asList(annotationsByType));
+            }
+            list.addAll(getMapperIndexes(clazz.getSuperclass()));
+        }
+        return list;
+    }
+
 
     public static List<MapperField> getMapperFields(Class<?> clazz) {
         List<MapperField> list = new ArrayList<>();
